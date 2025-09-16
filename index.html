@@ -1,0 +1,889 @@
+<!doctype html>
+<html lang="pt-BR" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>João Victor Silva - Jornada Ironman 70.3</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+            colors: {
+              brand: {
+                primary: "#F97316", // Orange 500
+                secondary: "#FB923C", // Orange 400
+              },
+              dark: {
+                900: "#0d1117",
+                800: "#161b22",
+                700: "#21262d",
+              },
+            },
+            animation: {
+              "fade-in-up": "fadeInUp 1s ease-out forwards",
+              "ken-burns": "kenBurns 20s ease-out infinite alternate forwards",
+              "pulse-glow": "pulseGlow 3s infinite ease-in-out",
+            },
+            keyframes: {
+              fadeInUp: {
+                "0%": { opacity: "0", transform: "translateY(20px)" },
+                "100%": { opacity: "1", transform: "translateY(0)" },
+              },
+              kenBurns: {
+                "0%": {
+                  transform: "scale(1) translate(0, 0)",
+                  "transform-origin": "center",
+                },
+                "100%": {
+                  transform: "scale(1.1) translate(5px, -5px)",
+                  "transform-origin": "center",
+                },
+              },
+              pulseGlow: {
+                "0%, 100%": {
+                  "box-shadow": "0 0 20px rgba(249, 115, 22, 0.2)",
+                },
+                "50%": { "box-shadow": "0 0 35px rgba(249, 115, 22, 0.4)" },
+              },
+            },
+          },
+        },
+      };
+    </script>
+    <style>
+      html {
+        scroll-padding-top: 5rem; /* Adjust this value based on your navbar height */
+      }
+      .revealable {
+        opacity: 0;
+        transform: translateY(40px);
+        transition:
+          opacity 0.8s ease-out,
+          transform 0.8s ease-out;
+      }
+      .revealable.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      #main-header .bg-image {
+        animation: kenBurns 20s ease-out infinite alternate forwards;
+      }
+      .nav-scrolled {
+        background-color: rgba(22, 27, 34, 0.7);
+        backdrop-filter: blur(8px);
+        box-shadow:
+          0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      }
+      .interactive-card {
+        position: relative;
+        overflow: hidden;
+      }
+      .interactive-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        border-radius: 0.75rem; /* same as rounded-xl */
+        border: 2px solid transparent;
+        background: linear-gradient(
+            120deg,
+            var(--tw-color-brand-primary),
+            var(--tw-color-brand-secondary)
+          )
+          border-box;
+        -webkit-mask:
+          linear-gradient(#fff 0 0) padding-box,
+          linear-gradient(#fff 0 0);
+        -webkit-mask-composite: destination-out;
+        mask-composite: exclude;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+      }
+      .interactive-card:hover::before {
+        opacity: 1;
+      }
+      /* Evolution Slider Styles */
+      .evolution-slide {
+        display: none;
+        transition: opacity 0.5s ease-in-out;
+      }
+      .evolution-slide.active {
+        display: block;
+      }
+      .evolution-dot {
+        transition: background-color 0.3s ease;
+      }
+      .evolution-dot.active {
+        background-color: #f97316; /* brand-primary */
+      }
+    </style>
+  </head>
+  <body class="bg-dark-900 text-slate-400 font-sans">
+    <!-- Navbar -->
+    <nav
+      id="navbar"
+      class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+    >
+      <div
+        class="container mx-auto px-6 py-4 flex justify-between items-center"
+      >
+        <a href="#home" class="text-xl font-bold text-white">JVS</a>
+        <div class="hidden md:flex space-x-8">
+          <a
+            href="#about"
+            class="text-slate-300 hover:text-brand-secondary transition-colors"
+            >Sobre</a
+          >
+          <a
+            href="#discipline"
+            class="text-slate-300 hover:text-brand-secondary transition-colors"
+            >Jornada</a
+          >
+          <a
+            href="#evolution"
+            class="text-slate-300 hover:text-brand-secondary transition-colors"
+            >Evolução</a
+          >
+          <a
+            href="#contact"
+            class="text-slate-300 hover:text-brand-secondary transition-colors"
+            >Contato</a
+          >
+        </div>
+      </div>
+    </nav>
+
+    <!-- Header -->
+    <header
+      id="home"
+      class="relative flex items-center justify-center h-screen overflow-hidden"
+    >
+      <div
+        class="absolute inset-0 bg-cover bg-center bg-image"
+        style="
+          background-image: url(&quot;https://images.unsplash.com/photo-1541696495119-c693482a0f8b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&quot;);
+        "
+      ></div>
+      <div
+        class="absolute inset-0 bg-gradient-to-t from-dark-900 via-dark-900/80 to-transparent"
+      ></div>
+      <div class="relative z-10 text-center text-white p-4 animate-fade-in-up">
+        <h1
+          class="text-4xl md:text-6xl lg:text-7xl font-black uppercase tracking-wider"
+        >
+          Forjando Disciplina,<br />
+          Conquistando o Impossível.
+        </h1>
+        <p
+          class="mt-4 text-lg md:text-xl lg:text-2xl font-light text-slate-300 max-w-3xl mx-auto"
+        >
+          Atleta de endurance em jornada para o Ironman 70.3.
+        </p>
+        <a
+          href="#contact"
+          class="mt-8 inline-block bg-brand-primary text-white font-bold py-3 px-8 rounded-full hover:bg-brand-secondary transition-all duration-300 text-lg shadow-lg shadow-brand-primary/20 hover:shadow-brand-primary/40 transform hover:scale-105 hover:brightness-110"
+        >
+          Vamos nos Conectar
+        </a>
+      </div>
+    </header>
+
+    <main class="overflow-x-hidden">
+      <!-- About Section -->
+      <section id="about" class="py-24">
+        <div class="container mx-auto px-6 revealable">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-white">
+              Sobre Mim
+            </h2>
+            <div class="w-24 h-1.5 bg-brand-primary mx-auto mt-4 rounded"></div>
+          </div>
+
+          <div class="flex flex-col md:flex-row items-center gap-12 lg:gap-16">
+            <div class="md:w-1/3 flex justify-center">
+              <img
+                src="https://mkdocs-201908.s3.sa-east-1.amazonaws.com:443/1624/production/6056c575b15945036a327e750051297e_1624/production/ImagemdoWhatsAppde2025-09-16s09_1758025880981.29"
+                alt="João Victor Silva"
+                class="rounded-full w-64 h-64 md:w-80 md:h-80 mx-auto object-cover border-4 border-brand-primary shadow-2xl shadow-brand-primary/10 transition-transform duration-300 hover:scale-105"
+              />
+            </div>
+            <div class="md:w-2/3 text-lg text-slate-300 space-y-4">
+              <p>
+                Olá, sou João Victor, um atleta de endurance de 24 anos. Em
+                julho de 2024, comecei uma jornada na corrida que me levou a
+                completar uma
+                <span class="text-brand-secondary font-semibold"
+                  >maratona de 42km</span
+                >. Essa conquista solidificou minha paixão pela superação e
+                agora alimenta um sonho ainda maior: o
+                <span class="text-brand-secondary font-semibold"
+                  >Ironman 70.3</span
+                >
+              </p>
+              <p>
+                A disciplina e a resiliência que a corrida me ensinou são a base
+                para os desafios da natação e do ciclismo. Cada treino é um
+                passo a mais na construção de uma versão mais forte e
+                <span class="text-brand-secondary font-semibold"
+                  >disciplinada</span
+                >
+                de mim mesmo.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Triple Discipline Section -->
+      <section id="discipline" class="py-24 bg-dark-800/50">
+        <div class="container mx-auto px-6 revealable">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-white">
+              A Disciplina Tripla
+            </h2>
+            <div class="w-24 h-1.5 bg-brand-primary mx-auto mt-4 rounded"></div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div
+              class="interactive-card bg-dark-800/50 backdrop-blur-sm border border-dark-700 p-8 rounded-xl flex flex-col items-center text-center transform hover:-translate-y-2 transition-transform duration-300 shadow-lg"
+            >
+              <div
+                class="bg-dark-900 p-4 rounded-full mb-4 border border-dark-700"
+              >
+                <svg
+                  class="h-10 w-10 text-brand-secondary"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-2">Natação</h3>
+              <p>
+                A calma e a técnica na água. Onde a eficiência dos movimentos e
+                o controle da respiração superam a força bruta.
+              </p>
+            </div>
+            <div
+              class="interactive-card bg-dark-800/50 backdrop-blur-sm border border-dark-700 p-8 rounded-xl flex flex-col items-center text-center transform hover:-translate-y-2 transition-transform duration-300 shadow-lg"
+            >
+              <div
+                class="bg-dark-900 p-4 rounded-full mb-4 border border-dark-700"
+              >
+                <svg
+                  class="h-10 w-10 text-brand-secondary"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M13.5 4.5l-4.5 4.5-4.5-4.5m4.5 9V3"
+                  ></path>
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M19.5 10.5c0 5.25-4.25 9.5-9.5 9.5S.5 15.75.5 10.5S4.75 1 10 1s9.5 4.25 9.5 9.5z"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-2">Ciclismo</h3>
+              <p>
+                A estratégia e a constância. Gerenciar a energia por longas
+                distâncias, otimizando o desempenho para superar os próprios
+                limites.
+              </p>
+            </div>
+            <div
+              class="interactive-card bg-dark-800/50 backdrop-blur-sm border border-dark-700 p-8 rounded-xl flex flex-col items-center text-center transform hover:-translate-y-2 transition-transform duration-300 shadow-lg"
+            >
+              <div
+                class="bg-dark-900 p-4 rounded-full mb-4 border border-dark-700"
+              >
+                <svg
+                  class="h-10 w-10 text-brand-secondary"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  aria-hidden="true"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M12.75 3.75v16.5M6 3.75h12M6 20.25h12"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="text-2xl font-bold text-white mb-2">Corrida</h3>
+              <p>
+                A força mental e a resiliência. Onde o corpo chega ao limite e a
+                mente assume para superar desafios inesperados.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Video Swim Section -->
+      <section id="swim-video" class="py-24">
+        <div class="container mx-auto px-6 revealable">
+          <div class="grid md:grid-cols-5 gap-12 items-center">
+            <div class="md:col-span-2 text-center md:text-left">
+              <h2 class="text-4xl md:text-5xl font-extrabold text-white">
+                Mergulho no Desafio
+              </h2>
+              <div
+                class="w-24 h-1.5 bg-brand-primary mx-auto md:mx-0 mt-4 rounded"
+              ></div>
+              <p class="mx-auto md:mx-0 mt-8 text-lg text-slate-300">
+                A natação é a primeira etapa do Ironman e talvez a mais
+                desafiadora. É onde a técnica, a respiração e a mente precisam
+                estar em perfeita sintonia.
+              </p>
+            </div>
+            <div class="md:col-span-3">
+              <div
+                class="aspect-video w-full rounded-xl overflow-hidden shadow-2xl shadow-black/30 border-2 border-dark-700"
+              >
+                <video
+                  class="w-full h-full object-cover"
+                  controls
+                  poster="https://images.unsplash.com/photo-1530549387789-4c1017266635?q=80&w=2070&auto=format&fit=crop"
+                >
+                  <source
+                    src="https://mkdocs-201908.s3.sa-east-1.amazonaws.com:443/1624/production/c0d6e29a9ef4e49872d066522d252623_1624/production/Nado_1758030369067.mp4"
+                    type="video/mp4"
+                  />
+                  Seu navegador não suporta o elemento de vídeo.
+                </video>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Goals Section -->
+      <section id="goals" class="py-24 bg-dark-800/50">
+        <div class="container mx-auto px-6 revealable">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-white">
+              A Escalada: Da Primeira Corrida ao Sonho do Ironman
+            </h2>
+            <div class="w-24 h-1.5 bg-brand-primary mx-auto mt-4 rounded"></div>
+          </div>
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto"
+          >
+            <div
+              class="bg-dark-800 p-6 rounded-xl text-center transform hover:scale-105 transition-transform duration-300 border border-dark-700 hover:border-brand-primary"
+            >
+              <p class="text-3xl font-bold text-brand-primary">5KM</p>
+              <p class="text-base text-slate-400 mt-2">O Início de Tudo</p>
+            </div>
+            <div
+              class="bg-dark-800 p-6 rounded-xl text-center transform hover:scale-105 transition-transform duration-300 border border-dark-700 hover:border-brand-primary"
+            >
+              <p class="text-3xl font-bold text-brand-primary">10KM</p>
+              <p class="text-base text-slate-400 mt-2">Dobrando a Distância</p>
+            </div>
+            <div
+              class="bg-dark-800 p-6 rounded-xl text-center transform hover:scale-105 transition-transform duration-300 border border-dark-700 hover:border-brand-primary"
+            >
+              <p class="text-3xl font-bold text-brand-primary">21KM</p>
+              <p class="text-base text-slate-400 mt-2">Meia Maratona</p>
+            </div>
+            <div
+              class="bg-dark-800 p-6 rounded-xl text-center transform hover:scale-105 transition-transform duration-300 border-2 border-brand-secondary shadow-lg shadow-brand-secondary/10"
+            >
+              <p class="text-3xl font-bold text-brand-secondary">42KM</p>
+              <p class="text-base text-slate-300 font-semibold mt-2">
+                A Maratona: Concluída!
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-12 max-w-5xl mx-auto revealable">
+            <div
+              class="bg-dark-800/50 backdrop-blur-sm border-2 border-brand-primary p-8 rounded-xl text-center transition-shadow duration-300 shadow-2xl shadow-brand-primary/10 animate-pulse-glow"
+            >
+              <h3
+                class="text-xl font-bold text-brand-secondary uppercase tracking-widest"
+              >
+                O Grande Sonho
+              </h3>
+              <p class="text-4xl md:text-5xl font-black text-white mt-2">
+                IRONMAN 70.3
+              </p>
+              <p class="text-base text-slate-300 mt-3 max-w-xl mx-auto">
+                1.9km Natação / 90km Ciclismo / 21.1km Corrida. O desafio que
+                une corpo, mente e espírito.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Journey Section -->
+      <section
+        id="journey"
+        class="py-24 bg-cover bg-fixed relative"
+        style="
+          background-image: url(&quot;https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYuqr5lmwyW4C6yJOC47q2fOO-2lhF0A-1j3UsZU1vB-h78rom0Y2gKefFc2aCKD4z86s&usqp=CAU&quot;);
+        "
+      >
+        <div class="absolute inset-0 bg-dark-900 bg-opacity-80"></div>
+        <div class="container mx-auto px-6 relative z-10 revealable">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-white">
+              O Começo da Jornada
+            </h2>
+            <div class="w-24 h-1.5 bg-brand-primary mx-auto mt-4 rounded"></div>
+          </div>
+          <div
+            class="max-w-3xl mx-auto text-center text-lg text-slate-200 space-y-6 bg-dark-800/50 p-8 md:p-10 rounded-xl backdrop-blur-sm border border-dark-700"
+          >
+            <p>
+              Minha jornada no esporte é uma tela em branco, e cada treino é uma
+              nova pincelada. Trata-se de construir uma base sólida, um dia de
+              cada vez. Cada corrida matinal, cada treino de força e cada
+              momento de superação estão me ensinando sobre comprometimento e a
+              beleza do processo.
+            </p>
+            <p>
+              Estou aprendendo que o esporte evolui constantemente. É preciso
+              estudar, adaptar-se e, acima de tudo, ter paciência. Essa
+              mentalidade de 'eterno aprendiz' é o que me impulsiona a ser um
+              atleta melhor.
+            </p>
+            <p class="font-semibold text-brand-secondary">
+              É nesse ritmo de construção e aprendizado que encontro a energia
+              para treinar e viver com propósito.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Evolution Timeline Section -->
+      <section id="evolution" class="py-24 bg-dark-900">
+        <div class="container mx-auto px-6">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-extrabold text-white">
+              Minha Evolução
+            </h2>
+            <div class="w-24 h-1.5 bg-brand-primary mx-auto mt-4 rounded"></div>
+          </div>
+
+          <div
+            id="evolution-slider-container"
+            class="max-w-4xl mx-auto relative revealable"
+          >
+            <!-- Slides will be injected here by JS -->
+            <div
+              id="evolution-slides"
+              class="relative w-full aspect-[16/10] rounded-xl overflow-hidden shadow-2xl shadow-black/30 bg-black"
+            ></div>
+
+            <!-- Navigation Buttons -->
+            <button
+              id="prev-slide"
+              aria-label="Marco Anterior"
+              class="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-1/2 md:-translate-x-full bg-dark-800/50 hover:bg-brand-primary text-white p-3 rounded-full transition-colors z-10"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+            <button
+              id="next-slide"
+              aria-label="Próximo Marco"
+              class="absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-1/2 md:translate-x-full bg-dark-800/50 hover:bg-brand-primary text-white p-3 rounded-full transition-colors z-10"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+
+            <!-- Navigation Dots -->
+            <div id="evolution-dots" class="flex justify-center space-x-3 mt-8">
+              <!-- Dots will be injected here by JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Partnerships Section -->
+      <section id="partnerships" class="py-24 bg-dark-800/50">
+        <div class="container mx-auto px-6 text-center revealable">
+          <h2 class="text-4xl md:text-5xl font-extrabold text-white">
+            Parcerias e Patrocínios
+          </h2>
+          <div class="w-24 h-1.5 bg-brand-primary mx-auto mt-4 rounded"></div>
+          <p class="max-w-3xl mx-auto mt-8 text-lg text-slate-300">
+            Estou em busca de marcas que queiram crescer juntas e construir uma
+            história autêntica de evolução e superação. Podemos criar uma
+            conexão genuína com a comunidade, inspirando outros que também estão
+            no início de suas jornadas.
+          </p>
+          <div
+            class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 max-w-5xl mx-auto text-left"
+          >
+            <div
+              class="bg-dark-800 p-6 rounded-xl shadow-lg border border-dark-700"
+            >
+              <h4 class="text-xl font-bold text-brand-secondary">
+                Jornada Autêntica
+              </h4>
+              <p class="mt-2 text-slate-400">
+                Compartilhar minha evolução real e os desafios do início,
+                criando um conteúdo com o qual o público realmente se
+                identifica.
+              </p>
+            </div>
+            <div
+              class="bg-dark-800 p-6 rounded-xl shadow-lg border border-dark-700"
+            >
+              <h4 class="text-xl font-bold text-brand-secondary">
+                Feedback de Produtos
+              </h4>
+              <p class="mt-2 text-slate-400">
+                Fornecer uma perspectiva honesta sobre produtos do ponto de
+                vista de um atleta iniciante e dedicado.
+              </p>
+            </div>
+            <div
+              class="bg-dark-800 p-6 rounded-xl shadow-lg border border-dark-700"
+            >
+              <h4 class="text-xl font-bold text-brand-secondary">
+                Criação de Conteúdo
+              </h4>
+              <p class="mt-2 text-slate-400">
+                Desenvolver conteúdo (fotos, vídeos, posts) que documenta a
+                jornada e destaca como sua marca faz parte dela.
+              </p>
+            </div>
+          </div>
+          <div class="mt-16">
+            <a
+              href="https://wa.me/5511911031972"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="bg-brand-primary text-white font-bold py-4 px-10 rounded-full hover:bg-brand-secondary transition-all duration-300 text-xl shadow-lg shadow-brand-primary/20 hover:shadow-brand-primary/40 transform hover:scale-105"
+            >
+              Vamos Conversar!
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section id="contact" class="py-24 bg-dark-900">
+        <div class="container mx-auto px-6 text-center revealable">
+          <h2 class="text-4xl md:text-5xl font-extrabold text-white">
+            Contato
+          </h2>
+          <div class="w-24 h-1.5 bg-brand-primary mx-auto mt-4 rounded"></div>
+          <p class="max-w-2xl mx-auto mt-8 text-lg text-slate-300">
+            Estou aberto a parcerias, patrocínios e conversas inspiradoras com
+            marcas que compartilham da mesma paixão por superação. Vamos nos
+            conectar!
+          </p>
+          <div
+            class="flex flex-wrap justify-center items-center gap-6 max-w-4xl mx-auto mt-12"
+          >
+            <a
+              href="mailto:jvs.devsilva@gmail.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center space-x-3 bg-dark-800 p-4 rounded-lg hover:bg-dark-700 transition-colors duration-300 text-lg text-white hover:text-brand-secondary flex-grow sm:flex-grow-0 justify-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-7 w-7"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                />
+              </svg>
+              <span>E-mail</span>
+            </a>
+            <a
+              href="https://wa.me/5511911031972"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center space-x-3 bg-dark-800 p-4 rounded-lg hover:bg-dark-700 transition-colors duration-300 text-lg text-white hover:text-brand-secondary flex-grow sm:flex-grow-0 justify-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-7 w-7"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.371-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01s-.521.074-.794.371c-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"
+                />
+              </svg>
+              <span>WhatsApp</span>
+            </a>
+            <a
+              href="https://www.linkedin.com/in/jo%C3%A3o-victor-b47870239/"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-center space-x-3 bg-dark-800 p-4 rounded-lg hover:bg-dark-700 transition-colors duration-300 text-lg text-white hover:text-brand-secondary flex-grow sm:flex-grow-0 justify-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-7 w-7"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"
+                />
+              </svg>
+              <span>LinkedIn</span>
+            </a>
+          </div>
+          <div
+            class="mt-16 bg-gradient-to-r from-brand-primary to-orange-400 p-8 rounded-xl max-w-3xl mx-auto text-white shadow-2xl shadow-brand-primary/20"
+          >
+            <h3 class="text-2xl font-bold">Acompanhe a Jornada</h3>
+            <p class="mt-2 text-lg text-orange-50">
+              Para ver a rotina de treinos, os desafios e os bastidores do meu
+              dia a dia, siga-me no Instagram!
+            </p>
+            <a
+              href="https://instagram.com/jvs.devsilva"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="mt-6 inline-flex items-center space-x-3 bg-white text-dark-900 font-bold py-3 px-6 rounded-full hover:bg-slate-200 transition-colors duration-300 transform hover:scale-105"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-6 w-6"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.85s-.011 3.584-.069 4.85c-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07s-3.584-.012-4.85-.07c-3.252-.148-4.771-1.691-4.919-4.919-.058-1.265-.069-1.645-.069-4.85s.011-3.584.069-4.85c.149-3.225 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.85-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948s.014 3.667.072 4.947c.2 4.359 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072s3.667-.014 4.947-.072c4.359-.2 6.78-2.618 6.98-6.98.058-1.281.072-1.689.072-4.948s-.014-3.667-.072-4.947c-.2-4.359-2.618-6.78-6.98-6.98-1.281-.058-1.689-.072-4.948-.072zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4s1.791-4 4-4 4 1.79 4 4-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
+                />
+              </svg>
+              <span>@jvs.devsilva</span>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark-900 py-8 text-center border-t border-dark-800">
+      <div class="container mx-auto px-6">
+        <p class="text-slate-500">
+          © <span id="year"></span> João Victor Silva. Todos os direitos
+          reservados.
+        </p>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Footer Year
+        document.getElementById("year").textContent = new Date().getFullYear();
+
+        // Navbar Scroll Logic
+        const navbar = document.getElementById("navbar");
+        window.addEventListener("scroll", () => {
+          if (window.scrollY > 50) {
+            navbar.classList.add("nav-scrolled");
+          } else {
+            navbar.classList.remove("nav-scrolled");
+          }
+        });
+
+        // Scroll Animation Logic
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+                observer.unobserve(entry.target);
+              }
+            });
+          },
+          {
+            threshold: 0.1,
+          }
+        );
+
+        document.querySelectorAll(".revealable").forEach((el) => {
+          observer.observe(el);
+        });
+
+        // Evolution Slider Logic
+        const evolutionData = [
+          {
+            image:
+              "https://mkdocs-201908.s3.sa-east-1.amazonaws.com:443/1624/production/43530e73964905f101f975349b54ca66_1624/production/foto1_1758029331818.jpg",
+            title: "Início da Jornada",
+            date: "Julho 2024",
+            description:
+              "Onde tudo começou. O compromisso de construir uma nova disciplina, um passo de cada vez.",
+          },
+          {
+            image:
+              "https://mkdocs-201908.s3.sa-east-1.amazonaws.com:443/1624/production/89fb946f8ebeb69b86a39f70d14b70c8_1624/production/foto2_1758029398757.jpg",
+            title: "Primeiros 5KM",
+            date: "Agosto 2024",
+            description:
+              "A primeira meta alcançada. A prova de que a constância nos treinos estava gerando resultados.",
+          },
+          {
+            image:
+              "https://mkdocs-201908.s3.sa-east-1.amazonaws.com:443/1624/production/81516f3e9bce69b0e2ff631ce2513d0d_1624/production/foto3_1758029480723.jpg",
+            title: "Dobrando para 10KM",
+            date: "Outubro 2024",
+            description:
+              "Superando a barreira dos dois dígitos. A resistência mental e física sendo postas à prova.",
+          },
+          {
+            image:
+              "https://mkdocs-201908.s3.sa-east-1.amazonaws.com:443/1624/production/988fb80a24f2da0882989f162e68aa93_1624/production/foto4_1758029590613.jpg",
+            title: "Treinamento",
+            date: "Junho 2025",
+            description: "Treino de base para a maratona na USP.",
+          },
+          {
+            image:
+              "https://mkdocs-201908.s3.sa-east-1.amazonaws.com:443/1624/production/908849823d72a1d357188bd24c60ee2f_1624/production/foto5_1758029701253.jpg",
+            title: "Primeira  Maratona",
+            date: "Agosto 2025",
+            description:
+              "Um grande salto de distância. 21km que ensinaram sobre ritmo, nutrição e o poder da mente.",
+          },
+          {
+            image:
+              "https://mkdocs-201908.s3.sa-east-1.amazonaws.com:443/1624/production/178da0fadbaf9cd0153afa88b0a70da0_1624/production/ImagemdoWhatsAppde2025-09-16s10_1758030470012.47",
+            title: "Construindo a Base",
+            date: "Atualmente",
+            description:
+              "No processo de fortalecimento e preparação para os próximos grandes desafios. A jornada continua.",
+          },
+        ];
+
+        const slidesContainer = document.getElementById("evolution-slides");
+        const dotsContainer = document.getElementById("evolution-dots");
+        const prevButton = document.getElementById("prev-slide");
+        const nextButton = document.getElementById("next-slide");
+        let currentSlide = 0;
+
+        function renderSlider() {
+          slidesContainer.innerHTML = "";
+          dotsContainer.innerHTML = "";
+
+          evolutionData.forEach((item, index) => {
+            // Create Slide
+            const slide = document.createElement("div");
+            slide.className = "evolution-slide absolute inset-0";
+            if (index === 0) slide.classList.add("active");
+            slide.innerHTML = `
+                        <img src="${item.image}" alt="${item.title}" class="w-full h-full object-contain">
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                        <div class="absolute bottom-0 left-0 p-6 md:p-8 text-white w-full">
+                            <p class="text-sm font-semibold text-brand-secondary">${item.date}</p>
+                            <h3 class="text-xl md:text-2xl font-bold mt-1">${item.title}</h3>
+                            <p class="text-sm mt-2 text-slate-300 hidden sm:block max-w-lg">${item.description}</p>
+                        </div>
+                    `;
+            slidesContainer.appendChild(slide);
+
+            // Create Dot
+            const dot = document.createElement("button");
+            dot.className =
+              "evolution-dot h-3 w-3 rounded-full bg-dark-700 hover:bg-dark-800";
+            dot.setAttribute("aria-label", `Ir para o marco ${index + 1}`);
+            if (index === 0) dot.classList.add("active");
+            dot.addEventListener("click", () => {
+              showSlide(index);
+            });
+            dotsContainer.appendChild(dot);
+          });
+        }
+
+        function showSlide(index) {
+          const slides = document.querySelectorAll(".evolution-slide");
+          const dots = document.querySelectorAll(".evolution-dot");
+
+          slides.forEach((slide) => slide.classList.remove("active"));
+          dots.forEach((dot) => dot.classList.remove("active"));
+
+          currentSlide = (index + slides.length) % slides.length;
+
+          slides[currentSlide].classList.add("active");
+          dots[currentSlide].classList.add("active");
+        }
+
+        prevButton.addEventListener("click", () => {
+          showSlide(currentSlide - 1);
+        });
+
+        nextButton.addEventListener("click", () => {
+          showSlide(currentSlide + 1);
+        });
+
+        renderSlider();
+        showSlide(0);
+      });
+    </script>
+  </body>
+</html>
